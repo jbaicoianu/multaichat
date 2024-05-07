@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block body %}
+    <div class="chat-container">
+        <ul class="messages">
+            {% for message in messages %}
+            <li>
+                <span class="message">{{ message }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+        <div class="input-container">
+            <input type="text" class="input-field" placeholder="Type a message..." value="{{ input_value }}">
+            <button class="send-button">Send</button>
+        </div>
+    </div>
+    <script>
+        // Add your JavaScript magic here
+    </script>
+{% endblock %}
