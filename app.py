@@ -5,7 +5,8 @@ import fire
 import torch
 torch.multiprocessing.set_start_method('spawn')
 
-app = Flask('multaichat')
+app = Flask('multaichat', static_folder='./static')
+app.config['TEMPLATES_AUTO_RELOAD'] = True
 web.add_routes(app)
 
 #fire.Fire(discord.main)

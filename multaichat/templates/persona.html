@@ -1,38 +1,44 @@
+{% set active_section = 'persona' %}
 {% extends "layout.html" %}
 {% block body %}
-<form id="persona-form" method="post" enctype="application/json" class="chat-container">
-  <label for="name">Name:</label>
-  <input type="text" id="name" name="name" required><br><br>
-  <label for="personality_prompt">Personality Prompt:</label>
-  <textarea id="personality_prompt" name="personality_prompt" required></textarea><br><br>
-  <label for="situational_prompt">Situational Prompt:</label>
-  <textarea id="situational_prompt" name="situational_prompt" required></textarea><br><br>
-  <label for="initial_prompt">Initial Prompt:</label>
-  <textarea id="initial_prompt" name="initial_prompt" required></textarea><br><br>
-  <label for="icon">Icon:</label>
-  <input id="icon" name="icon" required><br><br>
-  <label for="model">Model:</label>
-  <select id="model" name="model" required>
-    <option value="meta-llama/Meta-Llama-3-8B-Instruct">LLaMa 3 8B Instruct</option>
-    <option value="stabilityai/stablelm-2-zephyr-1_6b">StableLM 2 Zephyr 1.6B</option>
-    <option value="stabilityai/stablelm-2-12b">StableLM 2 12B</option>
-    <option value="stabilityai/stablelm-zephyr-3b">StableLM Zephyr 3B</option>
-    <option value="stabilityai/stable-code-instruct-3b">StableCode Instruct 3B</option>
-    <option value="meta-llama/Llama-2-7b-chat-hf">LLaMa 2 Chat</option>
-    <!-- add more options as needed -->
-  </select><br><br>
-  <input type="submit" value="Save Persona">
-</form>
+<section class="persona-edit">
+  <persona-picker></persona-picker>
+	<form id="persona-form" method="post" enctype="application/json">
+		<label for="name">Name:</label>
+		<input type="text" id="name" name="name" required value="{{ persona.name or '' }}"><br><br>
+		<label for="personality_prompt">Personality Prompt:</label>
+		<textarea id="personality_prompt" name="personality_prompt" required>{{ persona.personality_prompt or '' }}</textarea><br><br>
+		<label for="situational_prompt">Situational Prompt:</label>
+		<textarea id="situational_prompt" name="situational_prompt" required>{{ persona.situational_prompt or '' }}</textarea><br><br>
+		<label for="initial_prompt">Initial Prompt:</label>
+		<textarea id="initial_prompt" name="initial_prompt" required>{{ persona.initial_prompt or '' }}</textarea><br><br>
+		<label for="icon">Icon:</label>
+		<input id="icon" name="icon" required value="{{ persona.icon or '' }}"><br><br>
+		<label for="model">Model:</label>
+		<select id="model" name="model" required>
+			<option value="meta-llama/Meta-Llama-3-8B-Instruct">LLaMa 3 8B Instruct</option>
+			<option value="stabilityai/stablelm-2-zephyr-1_6b">StableLM 2 Zephyr 1.6B</option>
+			<option value="stabilityai/stablelm-2-12b">StableLM 2 12B</option>
+			<option value="stabilityai/stablelm-zephyr-3b">StableLM Zephyr 3B</option>
+			<option value="stabilityai/stable-code-instruct-3b">StableCode Instruct 3B</option>
+			<option value="meta-llama/Llama-2-7b-chat-hf">LLaMa 2 Chat</option>
+			<!-- add more options as needed -->
+		</select><br><br>
+		<label for="discord_key">Discord Key:</label>
+		<input type="text" id="discord_key" name="discord_key" value="{{ persona.discord_key or '' }}"><br><br>
+		<input type="submit" value="Save Persona">
+	</form>
 
-<script>
-  document.getElementById("persona-form").addEventListener("submit", function(event) {
-    event.preventDefault();
-    const formData = new FormData(this);
-    fetch('/api/personas', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(Object.fromEntries(formData))
-    });
-  });
-</script>
+	<script>
+		document.getElementById("persona-form").addEventListener("submit", function(event) {
+			event.preventDefault();
+			const formData = new FormData(this);
+			fetch('/api/personas', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(Object.fromEntries(formData))
+			});
+		});
+	</script>
+</section>
 {% endblock %}

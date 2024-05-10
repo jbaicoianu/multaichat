@@ -1,60 +1,25 @@
 <html>
   <head>
     <title>MultAIchat</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-        }
-       .chat-container {
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 20px;
-            background-color: #fff;
-            border: 1px solid #ddd;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-       .messages {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-       .messages li {
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-        }
-       .messages li:last-child {
-            border-bottom: none;
-        }
-       .message {
-            font-weight: bold;
-            color: #337ab7;
-        }
-       .input-container {
-            padding: 20px;
-        }
-       .input-field {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-        }
-       .send-button {
-            background-color: #337ab7;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        form label {
-            display: inline-block;
-            width: 12em;
-            vertical-align: top;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/main.css">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <script type="module" src="/scripts/persona-picker.js"></script>
+    <script type="module" src="/scripts/chat-session.js"></script>
+    <script type="module" src="/scripts/chat-messages.js"></script>
+    <script type="module" src="/scripts/chat-input.js"></script>
   </head>
   <body>
-    {% block body %} {% endblock %}
+    <nav class="site-nav">
+      <ul>
+        <li><a href="/" {% if active_section == 'chat' %} class="active"{% endif %}>Chat</a></li>
+        <li><a href="/persona" {% if active_section == 'persona' %} class="active"{% endif %}>Personas</a></li>
+        <li><a href="/settings" {% if active_section == 'settings' %} class="active"{% endif %}>Settings</a></li>
+      </ul>
+    </nav>
+    <div class="site-content">
+			{% block body %} {% endblock %}
+		</div>
   </body>
 </html>

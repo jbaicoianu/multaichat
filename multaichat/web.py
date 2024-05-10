@@ -1,4 +1,4 @@
-from flask import request, render_template
+from flask import request, render_template, send_from_directory
 import multaichat.personas, multaichat.chat
 import json
 
@@ -11,8 +11,18 @@ def chat():
     personas = multaichat.personas.load()
     return render_template('chat.html', personas=personas)
 
+def settings():
+    return render_template('settings.html')
+
 def persona():
-    return render_template('persona.html')
+    personas = multaichat.personas.load()
+    persona = None
+    persona_name = request.args.get('name')
+    if persona_name in personas:
+        persona = personas[persona_name]
+    else:
+        persona = multaichat.chat.ChatPersona(name=persona_name)
+    return render_template('persona.html', persona=persona)
 
 def api_personas_list():
     print(request.method)
@@ -25,20 +35,28 @@ def api_personas_list():
     elif request.method == 'POST':
         persona = multaichat.chat.ChatPersona(**request.json)
         print(persona.toJSON())
-        persona.save()
-        return {'status': 'ok'}
+        if persona.save():
+            return {'status': 'ok'}
+        else:
+            return {'status': 'failed'}
     
 def api_personas_create():
     for name in personas:
         j[name] = personas[name].toJSON()
     return j
     
+def serve_static_scripts(path):
+    return send_from_directory('static/scripts', path)
+def serve_static_css(path):
+    return send_from_directory('static/css', path)
 
 routes = {
-  '/': index,
-  '/chat': chat,
+  '/': chat,
   '/persona': persona,
-  '/api/personas': { "view_func": api_personas_list, "methods": ['GET', 'POST'] }
+  '/settings': settings,
+  '/api/personas': { "view_func": api_personas_list, "methods": ['GET', 'POST'] },
+  '/scripts/<path:path>': serve_static_scripts,
+  '/css/<path:path>': serve_static_css,
 }
 
 def add_routes(app):
