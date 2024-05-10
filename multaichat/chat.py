@@ -13,13 +13,14 @@ from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 latex_re = re.compile(r'\\\w+\{')
 
 class ChatPersona:
-    def __init__(self, name=None, personality_prompt=None, situational_prompt=None, initial_prompt=None, icon=None, role=None, generator=None, model=None):
+    def __init__(self, name=None, personality_prompt=None, situational_prompt=None, initial_prompt=None, icon=None, role=None, generator=None, model=None, discord_key=None):
         self.name = name or "DefaultChatPersona"
         self.role = role or 'assistant'
         self.personality_prompt = personality_prompt or "You are a chat bot built using the StableLM Large Language Model."
         self.situational_prompt = situational_prompt or "You are currently having a conversation with a user. The user asks you questions, and you answer them to the best of your knowledge."
         self.initial_prompt = initial_prompt or "Hello. My name is DefaultChatPersona. I am here to help you. Say whatever is in your mind freely, our conversation will be kept in strict confidence. Memory contents will be wiped off after you leave.\n\nSo, tell me about your problems."
         self.icon = icon or '🤖'
+        self.discord_key = discord_key or ''
         self.generator = generator
         self.model = model
 
@@ -36,8 +37,13 @@ class ChatPersona:
     def save(self, path=None):
         if not path:
             path = 'personas/' + self.name + '.json'
+        try:
             with open(path, 'w') as fd:
                 fd.write(json.dumps(self.toJSON(), indent=2))
+                return True
+        except Exception as e:
+            pass
+        return False
 
     def get_initial_prompt(self):
         return '\n'.join([
