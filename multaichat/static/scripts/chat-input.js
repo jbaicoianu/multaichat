@@ -17,6 +17,8 @@ class ChatInput extends HTMLElement {
     input.addEventListener('input', ev => this.handleInput(ev));
     input.addEventListener('keypress', ev => this.handleKeypress(ev));
     form.addEventListener('submit', ev => this.handleSubmit(ev));
+
+    input.focus();
   }
   resizeInput() {
     this.input.style.height = 0;
