@@ -24,11 +24,11 @@ class ChatInput extends HTMLElement {
     this.input.style.overflowY = (this.input.offsetHeight >= this.input.scrollHeight ? 'hidden' : 'visible');
   }
   handleInput(ev) {
-    console.log('got input', ev, ev.shiftKey);
+    //console.log('got input', ev, ev.shiftKey);
     this.resizeInput();
   }
   handleKeypress(ev) {
-    console.log(ev.keyCode, ev.shiftKey);
+    //console.log(ev.keyCode, ev.shiftKey);
     if (ev.keyCode == 13 && !ev.shiftKey) {
       this.handleSubmit(ev);
     }
