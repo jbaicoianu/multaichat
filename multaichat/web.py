@@ -24,7 +24,7 @@ def persona():
         persona = multaichat.chat.ChatPersona(name=persona_name)
     return render_template('persona.html', persona=persona)
 
-def api_personas_list():
+def api_personas():
     print(request.method)
     if request.method == 'GET':
         personas = multaichat.personas.load()
@@ -40,23 +40,29 @@ def api_personas_list():
         else:
             return {'status': 'failed'}
     
-def api_personas_create():
-    for name in personas:
-        j[name] = personas[name].toJSON()
-    return j
-    
+def api_chat():
+    if request.method == 'POST':
+        text = request.json.text
+        print('go fish', text)
+
 def serve_static_scripts(path):
     return send_from_directory('static/scripts', path)
 def serve_static_css(path):
     return send_from_directory('static/css', path)
 
 routes = {
+  # Website pages
   '/': chat,
   '/persona': persona,
   '/settings': settings,
-  '/api/personas': { "view_func": api_personas_list, "methods": ['GET', 'POST'] },
+
+  # Static files
   '/scripts/<path:path>': serve_static_scripts,
   '/css/<path:path>': serve_static_css,
+
+  # API endpoints
+  '/api/personas': { "view_func": api_personas, "methods": ['GET', 'POST'] },
+  '/api/chat': { "view_func": api_chat, "methods": ['GET', 'POST'] },
 }
 
 def add_routes(app):

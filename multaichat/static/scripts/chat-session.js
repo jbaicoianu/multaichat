@@ -1,3 +1,13 @@
+class ChatConnectionREST {
+  constructor(endpoint) {
+    this.endpoint = endpoint;
+  }
+  connect() {
+  }
+  query(text) {
+
+  }
+}
 class ChatSession extends HTMLElement {
   connectedCallback() {
     let personapicker = this.personapicker = document.createElement('persona-picker');
@@ -6,7 +16,13 @@ class ChatSession extends HTMLElement {
     this.appendChild(personapicker);
     this.appendChild(messages);
     this.appendChild(input);
-    input.addEventListener('send-message', ev => messages.addMessage(ev.detail));
+    input.addEventListener('send-message', ev => this.handleSendMessage(ev));
+
+    //this.connection = new ChatConnectionREST('/api/chat');
+  }
+  handleSendMessage(ev) {
+    this.messages.addMessage(ev.detail);
   }
 }
 customElements.define('chat-session', ChatSession);
+
